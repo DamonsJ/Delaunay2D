@@ -7,6 +7,30 @@ DelaunayTriangulation2D::DelaunayTriangulation2D()
 
 DelaunayTriangulation2D::~DelaunayTriangulation2D()
 {
+	m_vertexs.clear();
+	m_vertexs.shrink_to_fit();
+
+	std::map< std::pair<DTVertex *, DTVertex *>, DTHalfEdge* > m_edgePairs_cache;
+
+	for (auto &p : m_edgePairs_cache)
+	{
+		delete p.second;
+		p.second = nullptr;
+	}
+	m_edgePairs_cache.clear();
+
+	for (auto &f : m_faces)
+	{
+		delete f;
+	}
+	m_faces.clear();
+	m_faces.shrink_to_fit();
+
+	if (m_delaunay)
+	{
+		delete m_delaunay;
+		m_delaunay = nullptr;
+	}
 }
 
 void DelaunayTriangulation2D::AddPoints(std::vector<DTVertex*>& vts)
